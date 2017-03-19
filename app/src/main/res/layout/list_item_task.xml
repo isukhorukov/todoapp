@@ -15,6 +15,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:text="@string/button_done"
-        android:id="@+id/list_item_task_done_button"/>
+        android:text="@string/button_delete"
+        android:id="@+id/list_item_task_delete_button"/>
 </LinearLayout>

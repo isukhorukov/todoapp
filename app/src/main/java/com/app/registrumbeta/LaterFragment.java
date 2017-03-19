@@ -1,7 +1,11 @@
 package com.app.registrumbeta;
-import com.app.registrumbeta.data.Task;
-import com.app.registrumbeta.data.TasksDataSource;
+import com.app.registrumbeta.data.TaskDBHelper;
+import com.app.registrumbeta.data.TaskContract;
 
+
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -9,14 +13,11 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import java.lang.String;
-import java.util.List;
 
-import android.app.DialogFragment;
 import android.widget.ListView;
-import android.widget.Toast;
+
 
 
 
@@ -24,10 +25,17 @@ import android.widget.Toast;
  * Created by Илья on 05.03.2017.
  */
 
-public class LaterFragment extends Fragment {
+public class LaterFragment extends Fragment implements OnAddTaskListener{
 
-   // private static final String TASK_NAME = "Task Name";
-   private TasksDataSource datasource;
+    public LaterFragment() {
+        // Required empty public constructor
+    }
+
+	TaskAdapter mTaskAdapter;
+	 
+	// These indices are tied to TASKS_COLUMNS.  If TASKS_COLUMNS changes, these must change.
+    static final int COL_TASK_ID = 0;
+    static final int COL_TASK_NAME = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,42 +48,77 @@ public class LaterFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_later, container, false);
 
+		//Find the listView
+        ListView listView = (ListView) rootView.findViewById(R.id.listview_tasks);
 
+        //Get DBHelper to read from database
+        TaskDBHelper helper = new TaskDBHelper(getActivity());
+        SQLiteDatabase sqlDB = helper.getReadableDatabase();
 
-        //create database
-        datasource = new TasksDataSource(getActivity());
-        datasource.open();
-        //pass database data to list
-     //   List<Task> values = datasource.getAllTasks();
+        //Query database to get any existing data
+        Cursor cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
+                new String[]{ TaskContract.TaskEntry._ID, 
+							  TaskContract.TaskEntry.COLUMN_TASK,
+							  TaskContract.TaskEntry.COLUMN_IMPORTANT,
+							  TaskContract.TaskEntry.COLUMN_QUICK,
+							  TaskContract.TaskEntry.COLUMN_CLEAR,
+							  TaskContract.TaskEntry.COLUMN_DONE},
+                null, null, null, null, null);
 
-        // use the SimpleCursorAdapter to show the
-        // elements in a ListView
-     //   ArrayAdapter<Task> adapter = new ArrayAdapter<Task>(getActivity(),
-     //           R.layout.list_item_task,
-     //           R.id.list_item_task_textview, values);
-      //  ListView listView = (ListView) rootView.findViewById(R.id.listview_tasks);
-     //   listView.setAdapter(adapter);
+        //Create a new TaskAdapter and bind it to ListView
+        mTaskAdapter = new TaskAdapter(getActivity(), cursor);
+        listView.setAdapter(mTaskAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Task task = null;
 
                 FragmentManager manager = getFragmentManager();
                 AddDialogFragment dialog = new AddDialogFragment();
+                dialog.setTargetFragment(new LaterFragment(), 0);
                 dialog.show(manager, "Task Name");
-
-
+                onAddTaskSubmit("task");
             }
         });
 
-     //   Bundle mArgs = getArguments();
-     //   String newTask = mArgs.getString("inputTask");
-
-     //   task = datasource.createTask(newTask);
-      //  adapter.add(task);
 
         return rootView;
+    }
+    @Override
+    public void onAddTaskSubmit(String inputTask) {
+        //System.out.println(inputTask);
+		//Get DBHelper to write to database
+        TaskDBHelper helper = new TaskDBHelper(getActivity());
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        //Put in the values within a ContentValues.
+        ContentValues values = new ContentValues();
+        values.clear();
+        values.put(TaskContract.TaskEntry.COLUMN_TASK, inputTask);
+		values.put(TaskContract.TaskEntry.COLUMN_IMPORTANT, 0);
+		values.put(TaskContract.TaskEntry.COLUMN_QUICK, 0);
+		values.put(TaskContract.TaskEntry.COLUMN_CLEAR, 0);
+		values.put(TaskContract.TaskEntry.COLUMN_DONE, 0);
+
+        //Insert the values into the Table for Tasks
+        db.insertWithOnConflict(
+			TaskContract.TaskEntry.TABLE_NAME,
+            null,
+            values,
+            SQLiteDatabase.CONFLICT_IGNORE);
+
+                        //Query database again to get updated data
+            Cursor cursor = db.query(TaskContract.TaskEntry.TABLE_NAME,
+            new String[]{ TaskContract.TaskEntry._ID, 
+							  TaskContract.TaskEntry.COLUMN_TASK,
+							  TaskContract.TaskEntry.COLUMN_IMPORTANT,
+							  TaskContract.TaskEntry.COLUMN_QUICK,
+							  TaskContract.TaskEntry.COLUMN_CLEAR,
+							  TaskContract.TaskEntry.COLUMN_DONE},
+            null, null, null, null, null);
+
+            //Swap old data with new data for display
+            mTaskAdapter.swapCursor(cursor);
     }
 }

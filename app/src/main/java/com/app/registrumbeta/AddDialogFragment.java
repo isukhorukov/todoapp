@@ -10,7 +10,19 @@ import android.support.v7.app.AlertDialog;
 import android.widget.EditText;
 import android.content.DialogInterface;
 
-public class AddDialogFragment extends DialogFragment {
+public class AddDialogFragment extends DialogFragment  {
+    private OnAddTaskListener callback;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        try {
+            callback = (OnAddTaskListener) getTargetFragment();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Calling Fragment must implement OnAddFriendListener");
+        }
+    }
 
     public static final String TAG_TASK_INPUT = "task";
 
@@ -26,12 +38,10 @@ public class AddDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Get user input
                         String inputTask = inputField.getText().toString();
-                        System.out.println(inputTask);
+                       // System.out.println(inputTask);
+                        //Resources().getString(R.string.inputTask) = inputTask;
+                       // callback.onAddTaskSubmit(inputTask);
 
-                    //    Bundle args = new Bundle();
-                     //   args.putString("inputTask", inputTask);
-                     //   LaterFragment newFragment = new LaterFragment();
-                     //   newFragment.setArguments(args);
 
                     }
         }).setNegativeButton("Cancel", null).create();
