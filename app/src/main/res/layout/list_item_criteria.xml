@@ -8,15 +8,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="7"
-        android:id="@+id/list_item_task_textview"
+        android:id="@+id/list_item_criteria_textview"
         android:textAppearance="?android:textAppearanceLarge"/>
 
-    <Button
-        android:layout_width="0dp"
+    <CheckBox android:id="@+id/checkbox_important"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:text="@string/button_delete"
-        android:id="@+id/list_item_task_delete_button"/>
-
+        android:text="@string/important"/>
+    <!--    android:onClick="onCheckboxClicked"/> -->
 
 </LinearLayout>

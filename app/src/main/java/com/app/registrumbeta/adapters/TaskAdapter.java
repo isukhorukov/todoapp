@@ -1,4 +1,6 @@
-package com.app.registrumbeta;
+package com.app.registrumbeta.adapters;
+import com.app.registrumbeta.CriteriaFragment;
+import com.app.registrumbeta.LaterFragment;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.app.registrumbeta.R;
 import com.app.registrumbeta.data.TaskContract;
 import com.app.registrumbeta.data.TaskDBHelper;
 
@@ -57,6 +60,7 @@ public class TaskAdapter extends CursorAdapter {
                 //Execute the delete command
                 sqlDB.execSQL(sql);
                 notifyDataSetChanged();
+               // CriteriaFragment.cTaskAdapter.notifyDataSetChanged();
 
                 //Query database for updated data
                 Cursor cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
