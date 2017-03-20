@@ -13,6 +13,10 @@ import android.content.DialogInterface;
 public class AddDialogFragment extends DialogFragment  {
     private OnAddTaskListener callback;
 
+    public interface OnAddTaskListener {
+        public void onAddTaskSubmit(String inputTask);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +42,9 @@ public class AddDialogFragment extends DialogFragment  {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Get user input
                         String inputTask = inputField.getText().toString();
-                       // System.out.println(inputTask);
+                        //System.out.println(inputTask);
                         //Resources().getString(R.string.inputTask) = inputTask;
-                       // callback.onAddTaskSubmit(inputTask);
+                        callback.onAddTaskSubmit(inputTask);
 
 
                     }

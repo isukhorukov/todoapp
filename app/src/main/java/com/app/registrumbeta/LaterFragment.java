@@ -26,7 +26,7 @@ import android.widget.ListView;
  * Created by Илья on 05.03.2017.
  */
 
-public class LaterFragment extends Fragment implements OnAddTaskListener{
+public class LaterFragment extends Fragment implements AddDialogFragment.OnAddTaskListener {
 
     public LaterFragment() {
         // Required empty public constructor
@@ -77,12 +77,12 @@ public class LaterFragment extends Fragment implements OnAddTaskListener{
 
                 FragmentManager manager = getFragmentManager();
                 AddDialogFragment dialog = new AddDialogFragment();
-                dialog.setTargetFragment(new LaterFragment(), 0);
+                dialog.setTargetFragment(LaterFragment.this, 0);
                 dialog.show(manager, "Task Name");
-                onAddTaskSubmit("task 1");
-                onAddTaskSubmit("task 2");
-                onAddTaskSubmit("task 3");
-                onAddTaskSubmit("task 4");
+              //  onAddTaskSubmit("task 1");
+              //  onAddTaskSubmit("task 2");
+              //  onAddTaskSubmit("task 3");
+              //  onAddTaskSubmit("task 4");
             }
         });
 

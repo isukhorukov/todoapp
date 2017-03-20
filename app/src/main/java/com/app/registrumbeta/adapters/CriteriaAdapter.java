@@ -1,5 +1,6 @@
 package com.app.registrumbeta.adapters;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -49,16 +50,35 @@ public class CriteriaAdapter extends CursorAdapter {
       //  Button delete_button = (Button) view.findViewById(R.id.list_item_task_delete_button);
 
         // Extract properties from cursor
-      //  final String id = cursor.getString(LaterFragment.COL_TASK_ID);
+        final String id = cursor.getString(CriteriaFragment.COL_TASK_ID);
         final String task = cursor.getString(CriteriaFragment.COL_TASK_NAME);
 
         // Populate views with extracted properties
         textView.setText(task);
+        checkBox.setChecked(cursor.getInt(CriteriaFragment.COL_TASK_IMPORTANT) == 0 ? false : true);
+
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean checked = ((CheckBox) v).isChecked();
                 //Create a SQL command for deleting a particular ID.
-                System.out.println("checked");
+                //boolean checked = isChecked();
+                if(checked) {
+                    ContentValues values = new ContentValues();
+                    values.clear();
+                    values.put(TaskContract.TaskEntry.COLUMN_IMPORTANT, 1);
+                    SQLiteDatabase sqlDB = helper.getWritableDatabase();
+                    sqlDB.update(TaskContract.TaskEntry.TABLE_NAME, values, TaskContract.TaskEntry._ID + " = ?",
+                            new String[] { id });
+                }   else {
+                    ContentValues values = new ContentValues();
+                    values.clear();
+                    values.put(TaskContract.TaskEntry.COLUMN_IMPORTANT, 0);
+                    SQLiteDatabase sqlDB = helper.getWritableDatabase();
+                    sqlDB.update(TaskContract.TaskEntry.TABLE_NAME, values, TaskContract.TaskEntry._ID + " = ?",
+                            new String[] { id });
+                }
+                //System.out.println("checked");
             }
         });
     }
