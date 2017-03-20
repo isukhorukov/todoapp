@@ -24,10 +24,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + TABLE_TASKS + "( " 
 			+ COLUMN_ID + " integer primary key autoincrement, " 
 			+ COLUMN_TASK + " text not null, " 
-			+ COLUMN_IMPORTANT + "integer, "
-			+ COLUMN_QUICK + "integer, "
-			+ COLUMN_CLEAR + "integer, "
-			+ COLUMN_DONE + " integer);";
+			+ COLUMN_IMPORTANT + " integer not null, "
+			+ COLUMN_QUICK + " integer not null, "
+			+ COLUMN_CLEAR + " integer not null, "
+			+ COLUMN_DONE + " integer not null);";
 
 	//constructor
     public MySQLiteHelper(Context context) {
