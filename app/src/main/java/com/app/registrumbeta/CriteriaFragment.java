@@ -33,7 +33,7 @@ public class CriteriaFragment extends Fragment {
     static public final int COL_TASK_NAME = 1;
     static public final int COL_TASK_IMPORTANT = 2;
 
-    static CriteriaAdapter cTaskAdapter;
+    public static CriteriaAdapter cTaskAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

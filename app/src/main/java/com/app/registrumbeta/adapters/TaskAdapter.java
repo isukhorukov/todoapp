@@ -72,6 +72,7 @@ public class TaskAdapter extends CursorAdapter {
 							  TaskContract.TaskEntry.COLUMN_DONE},
                         null,null,null,null,null);
                 //Instance method with TaskAdapter so no need to use adapter.swapCursor()
+                CriteriaFragment.cTaskAdapter.swapCursor(cursor); // update data for Ctritera
                 swapCursor(cursor);
             }
         });

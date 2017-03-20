@@ -56,6 +56,7 @@ public class LaterFragment extends Fragment implements AddDialogFragment.OnAddTa
         TaskDBHelper helper = new TaskDBHelper(getActivity());
         SQLiteDatabase sqlDB = helper.getReadableDatabase();
 
+
         //Query database to get any existing data
         Cursor cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
                 new String[]{ TaskContract.TaskEntry._ID,
