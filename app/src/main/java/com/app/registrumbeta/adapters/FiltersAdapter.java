@@ -27,7 +27,7 @@ import com.app.registrumbeta.data.TaskDBHelper;
 
 public class FiltersAdapter extends CursorAdapter {
     private static Context context;
-    TaskDBHelper helper;
+    public static TaskDBHelper helper;
 
     public FiltersAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
@@ -49,7 +49,8 @@ public class FiltersAdapter extends CursorAdapter {
         // Find Views to populate in inflated template
         TextView textView = (TextView) view.findViewById(R.id.list_item_filters_textview);
         CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox_done);
-        //  Button delete_button = (Button) view.findViewById(R.id.list_item_task_delete_button);
+
+
 
         // Extract properties from cursor
         final String id = cursor.getString(FiltersFragment.COL_TASK_ID);
@@ -91,5 +92,7 @@ public class FiltersAdapter extends CursorAdapter {
                 //System.out.println("checked");
             }
         });
+
+
     }
 }

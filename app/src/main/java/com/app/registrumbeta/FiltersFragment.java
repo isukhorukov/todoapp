@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class FiltersFragment extends Fragment {
     public static FiltersAdapter fTaskAdapter;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,6 +45,9 @@ public class FiltersFragment extends Fragment {
 
         //Find the listView
         ListView listView = (ListView) rootView.findViewById(R.id.listview_filters);
+
+        //checkbox for activate filter
+        CheckBox checkBoxFilterImportant = (CheckBox) rootView.findViewById(R.id.checkbox_filter_important);
 
         //Get DBHelper to read from database
         TaskDBHelper helper = new TaskDBHelper(getActivity());
@@ -73,6 +78,49 @@ public class FiltersFragment extends Fragment {
         // cTaskAdapter.swapCursor(cursor);
         listView.setAdapter(fTaskAdapter);
 
+
+        checkBoxFilterImportant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean checked = ((CheckBox) v).isChecked();
+
+                if(checked) {
+
+                    SQLiteDatabase sqlDB = fTaskAdapter.helper.getWritableDatabase();
+
+                    //Query database for updated data
+                    Cursor cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
+                            new String[]{ TaskContract.TaskEntry._ID,
+                                    TaskContract.TaskEntry.COLUMN_TASK,
+                                    TaskContract.TaskEntry.COLUMN_IMPORTANT,
+                                    TaskContract.TaskEntry.COLUMN_QUICK,
+                                    TaskContract.TaskEntry.COLUMN_CLEAR,
+                                    TaskContract.TaskEntry.COLUMN_DONE},
+                            TaskContract.TaskEntry.COLUMN_IMPORTANT + " = ?", new String[] { "1" } , null, null, null);
+                    //Instance method with TaskAdapter so no need to use adapter.swapCursor()
+                    fTaskAdapter.swapCursor(cursor); // update data for Ctritera
+
+                } else {
+                    SQLiteDatabase sqlDB = fTaskAdapter.helper.getWritableDatabase();
+
+                    Cursor cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
+                            new String[]{ TaskContract.TaskEntry._ID,
+                                    TaskContract.TaskEntry.COLUMN_TASK,
+                                    TaskContract.TaskEntry.COLUMN_IMPORTANT,
+                                    TaskContract.TaskEntry.COLUMN_QUICK,
+                                    TaskContract.TaskEntry.COLUMN_CLEAR,
+                                    TaskContract.TaskEntry.COLUMN_DONE},
+                            //  TaskContract.TaskEntry.COLUMN_DONE + " = ?", new String[] { "0" } , null, null, null);
+                            null, null, null, null, null);
+                    //Instance method with TaskAdapter so no need to use adapter.swapCursor()
+                    fTaskAdapter.swapCursor(cursor); // update data for Ctritera
+                }
+            }
+        });
+
         return rootView;
     }
+
+
+
 }
