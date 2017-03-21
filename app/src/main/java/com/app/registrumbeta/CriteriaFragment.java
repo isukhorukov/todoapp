@@ -48,6 +48,15 @@ public class CriteriaFragment extends Fragment {
         SQLiteDatabase sqlDB = helper.getReadableDatabase();
 
         //Query database to get any existing data
+     /*   Cursor cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
+                new String[]{ TaskContract.TaskEntry._ID,
+                        TaskContract.TaskEntry.COLUMN_TASK,
+                        TaskContract.TaskEntry.COLUMN_IMPORTANT,
+                        TaskContract.TaskEntry.COLUMN_QUICK,
+                        TaskContract.TaskEntry.COLUMN_CLEAR,
+                        TaskContract.TaskEntry.COLUMN_DONE},
+                null, null, null, null, null); */
+
         Cursor cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
                 new String[]{ TaskContract.TaskEntry._ID,
                         TaskContract.TaskEntry.COLUMN_TASK,
@@ -55,8 +64,7 @@ public class CriteriaFragment extends Fragment {
                         TaskContract.TaskEntry.COLUMN_QUICK,
                         TaskContract.TaskEntry.COLUMN_CLEAR,
                         TaskContract.TaskEntry.COLUMN_DONE},
-                null, null, null, null, null);
-
+                TaskContract.TaskEntry.COLUMN_DONE + " = ?", new String[] { "0" } , null, null, null);
 
         //Create a new TaskAdapter and bind it to ListView
         cTaskAdapter = new CriteriaAdapter(getActivity(), cursor);

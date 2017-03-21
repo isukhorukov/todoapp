@@ -85,7 +85,8 @@ public class FiltersAdapter extends CursorAdapter {
                             TaskContract.TaskEntry.COLUMN_DONE + " = ?", new String[] { "0" } , null, null, null);
                     //Instance method with TaskAdapter so no need to use adapter.swapCursor()
                     FiltersFragment.fTaskAdapter.swapCursor(cursor); // update data for Ctritera
-
+                    LaterFragment.mTaskAdapter.swapCursor(cursor);
+                    CriteriaFragment.cTaskAdapter.swapCursor(cursor);
                 }   else {
 
                 }

@@ -33,7 +33,7 @@ public class LaterFragment extends Fragment implements AddDialogFragment.OnAddTa
         // Required empty public constructor
     }
 
-    static TaskAdapter mTaskAdapter;
+    static public TaskAdapter mTaskAdapter;
 
     // These indices are tied to TASKS_COLUMNS.  If TASKS_COLUMNS changes, these must change.
     static public final int COL_TASK_ID = 0;
@@ -59,6 +59,15 @@ public class LaterFragment extends Fragment implements AddDialogFragment.OnAddTa
 
 
         //Query database to get any existing data
+      /*  Cursor cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
+                new String[]{ TaskContract.TaskEntry._ID,
+                        TaskContract.TaskEntry.COLUMN_TASK,
+                        TaskContract.TaskEntry.COLUMN_IMPORTANT,
+                        TaskContract.TaskEntry.COLUMN_QUICK,
+                        TaskContract.TaskEntry.COLUMN_CLEAR,
+                        TaskContract.TaskEntry.COLUMN_DONE},
+                null, null, null, null, null); */
+
         Cursor cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
                 new String[]{ TaskContract.TaskEntry._ID,
                         TaskContract.TaskEntry.COLUMN_TASK,
@@ -66,7 +75,7 @@ public class LaterFragment extends Fragment implements AddDialogFragment.OnAddTa
                         TaskContract.TaskEntry.COLUMN_QUICK,
                         TaskContract.TaskEntry.COLUMN_CLEAR,
                         TaskContract.TaskEntry.COLUMN_DONE},
-                null, null, null, null, null);
+                TaskContract.TaskEntry.COLUMN_DONE + " = ?", new String[] { "0" } , null, null, null);
 
         //Create a new TaskAdapter and bind it to ListView
         mTaskAdapter = new TaskAdapter(getActivity(), cursor);
@@ -122,7 +131,8 @@ public class LaterFragment extends Fragment implements AddDialogFragment.OnAddTa
                         TaskContract.TaskEntry.COLUMN_QUICK,
                         TaskContract.TaskEntry.COLUMN_CLEAR,
                         TaskContract.TaskEntry.COLUMN_DONE},
-                null, null, null, null, null);
+              //  null, null, null, null, null);
+                TaskContract.TaskEntry.COLUMN_DONE + " = ?", new String[] { "0" } , null, null, null);
 
         //CriteriaFragment.cTaskAdapter.notifyDataSetChanged();
         //Swap old data with new data for display

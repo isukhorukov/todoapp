@@ -96,7 +96,8 @@ public class FiltersFragment extends Fragment {
                                     TaskContract.TaskEntry.COLUMN_QUICK,
                                     TaskContract.TaskEntry.COLUMN_CLEAR,
                                     TaskContract.TaskEntry.COLUMN_DONE},
-                            TaskContract.TaskEntry.COLUMN_IMPORTANT + " = ?", new String[] { "1" } , null, null, null);
+                                    TaskContract.TaskEntry.COLUMN_IMPORTANT + " = ? AND " +
+                                    TaskContract.TaskEntry.COLUMN_DONE + " = ?", new String[] { "1", "0" } , null, null, null);
                     //Instance method with TaskAdapter so no need to use adapter.swapCursor()
                     fTaskAdapter.swapCursor(cursor); // update data for Ctritera
 
@@ -110,8 +111,8 @@ public class FiltersFragment extends Fragment {
                                     TaskContract.TaskEntry.COLUMN_QUICK,
                                     TaskContract.TaskEntry.COLUMN_CLEAR,
                                     TaskContract.TaskEntry.COLUMN_DONE},
-                            //  TaskContract.TaskEntry.COLUMN_DONE + " = ?", new String[] { "0" } , null, null, null);
-                            null, null, null, null, null);
+                              TaskContract.TaskEntry.COLUMN_DONE + " = ?", new String[] { "0" } , null, null, null);
+                          //  null, null, null, null, null);
                     //Instance method with TaskAdapter so no need to use adapter.swapCursor()
                     fTaskAdapter.swapCursor(cursor); // update data for Ctritera
                 }
