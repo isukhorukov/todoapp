@@ -1,5 +1,7 @@
 package com.app.registrumbeta.adapters;
 
+
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,23 +14,22 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.app.registrumbeta.FiltersFragment;
-import com.app.registrumbeta.CriteriaFragment;
 import com.app.registrumbeta.LaterFragment;
+import com.app.registrumbeta.CriteriaFragment;
+import com.app.registrumbeta.FiltersFragment;
 import com.app.registrumbeta.R;
 import com.app.registrumbeta.data.TaskContract;
 import com.app.registrumbeta.data.TaskDBHelper;
 
 /**
- * Created by Илья on 19.03.2017.
+ * Created by Илья on 21.03.2017.
  */
 
-public class CriteriaAdapter extends CursorAdapter {
-
+public class FiltersAdapter extends CursorAdapter {
     private static Context context;
     TaskDBHelper helper;
 
-    public CriteriaAdapter(Context context, Cursor cursor) {
+    public FiltersAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
         this.context = context;
         helper = new TaskDBHelper(context);
@@ -38,7 +39,7 @@ public class CriteriaAdapter extends CursorAdapter {
     // you don't bind any data to the view at this point.
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.list_item_criteria, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.list_item_filters, parent, false);
     }
 
     // The bindView method is used to bind all data to a given view
@@ -46,17 +47,17 @@ public class CriteriaAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Find Views to populate in inflated template
-        TextView textView = (TextView) view.findViewById(R.id.list_item_criteria_textview);
-        CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox_important);
-      //  Button delete_button = (Button) view.findViewById(R.id.list_item_task_delete_button);
+        TextView textView = (TextView) view.findViewById(R.id.list_item_filters_textview);
+        CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox_done);
+        //  Button delete_button = (Button) view.findViewById(R.id.list_item_task_delete_button);
 
         // Extract properties from cursor
-        final String id = cursor.getString(CriteriaFragment.COL_TASK_ID);
-        final String task = cursor.getString(CriteriaFragment.COL_TASK_NAME);
+        final String id = cursor.getString(FiltersFragment.COL_TASK_ID);
+        final String task = cursor.getString(FiltersFragment.COL_TASK_NAME);
 
         // Populate views with extracted properties
         textView.setText(task);
-        checkBox.setChecked(cursor.getInt(CriteriaFragment.COL_TASK_IMPORTANT) == 0 ? false : true);
+    //    checkBox.setChecked(cursor.getInt(CriteriaFragment.COL_TASK_IMPORTANT) == 0 ? false : true);
 
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,11 +68,11 @@ public class CriteriaAdapter extends CursorAdapter {
                 if(checked) {
                     ContentValues values = new ContentValues();
                     values.clear();
-                    values.put(TaskContract.TaskEntry.COLUMN_IMPORTANT, 1);
+                    values.put(TaskContract.TaskEntry.COLUMN_DONE, 1);
                     SQLiteDatabase sqlDB = helper.getWritableDatabase();
                     sqlDB.update(TaskContract.TaskEntry.TABLE_NAME, values, TaskContract.TaskEntry._ID + " = ?",
                             new String[] { id });
-                    /*
+
                     //Query database for updated data
                     Cursor cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
                             new String[]{ TaskContract.TaskEntry._ID,
@@ -80,31 +81,12 @@ public class CriteriaAdapter extends CursorAdapter {
                                     TaskContract.TaskEntry.COLUMN_QUICK,
                                     TaskContract.TaskEntry.COLUMN_CLEAR,
                                     TaskContract.TaskEntry.COLUMN_DONE},
-                            null,null,null,null,null);
+                            TaskContract.TaskEntry.COLUMN_DONE + " = ?", new String[] { "0" } , null, null, null);
                     //Instance method with TaskAdapter so no need to use adapter.swapCursor()
-                    CriteriaFragment.cTaskAdapter.swapCursor(cursor); // update data for Ctritera
-                     */
+                    FiltersFragment.fTaskAdapter.swapCursor(cursor); // update data for Ctritera
 
                 }   else {
-                    ContentValues values = new ContentValues();
-                    values.clear();
-                    values.put(TaskContract.TaskEntry.COLUMN_IMPORTANT, 0);
-                    SQLiteDatabase sqlDB = helper.getWritableDatabase();
-                    sqlDB.update(TaskContract.TaskEntry.TABLE_NAME, values, TaskContract.TaskEntry._ID + " = ?",
-                            new String[] { id });
-                    /*
-                    //Query database for updated data
-                    Cursor cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
-                            new String[]{ TaskContract.TaskEntry._ID,
-                                    TaskContract.TaskEntry.COLUMN_TASK,
-                                    TaskContract.TaskEntry.COLUMN_IMPORTANT,
-                                    TaskContract.TaskEntry.COLUMN_QUICK,
-                                    TaskContract.TaskEntry.COLUMN_CLEAR,
-                                    TaskContract.TaskEntry.COLUMN_DONE},
-                            null,null,null,null,null);
-                    //Instance method with TaskAdapter so no need to use adapter.swapCursor()
-                    CriteriaFragment.cTaskAdapter.swapCursor(cursor); // update data for Ctritera
-                    */
+
                 }
                 //System.out.println("checked");
             }

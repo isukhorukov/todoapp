@@ -1,5 +1,6 @@
 package com.app.registrumbeta.adapters;
 import com.app.registrumbeta.CriteriaFragment;
+import com.app.registrumbeta.FiltersFragment;
 import com.app.registrumbeta.LaterFragment;
 
 import android.content.Context;
@@ -73,6 +74,7 @@ public class TaskAdapter extends CursorAdapter {
                         null,null,null,null,null);
                 //Instance method with TaskAdapter so no need to use adapter.swapCursor()
                 CriteriaFragment.cTaskAdapter.swapCursor(cursor); // update data for Ctritera
+                FiltersFragment.fTaskAdapter.swapCursor(cursor);
                 swapCursor(cursor);
             }
         });

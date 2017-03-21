@@ -6,4 +6,5 @@
     <string name="task_name">Task Name</string>
     <string name="inputTask" />
     <string name="important">important</string>
+    <string name="done">done</string>
 </resources>
