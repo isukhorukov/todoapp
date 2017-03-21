@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.app.registrumbeta.CompleteFragment;
 import com.app.registrumbeta.LaterFragment;
 import com.app.registrumbeta.CriteriaFragment;
 import com.app.registrumbeta.FiltersFragment;
@@ -87,6 +88,17 @@ public class FiltersAdapter extends CursorAdapter {
                     FiltersFragment.fTaskAdapter.swapCursor(cursor); // update data for Ctritera
                     LaterFragment.mTaskAdapter.swapCursor(cursor);
                     CriteriaFragment.cTaskAdapter.swapCursor(cursor);
+
+                    //cursor.close();
+                    cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
+                            new String[]{ TaskContract.TaskEntry._ID,
+                                    TaskContract.TaskEntry.COLUMN_TASK,
+                                    TaskContract.TaskEntry.COLUMN_IMPORTANT,
+                                    TaskContract.TaskEntry.COLUMN_QUICK,
+                                    TaskContract.TaskEntry.COLUMN_CLEAR,
+                                    TaskContract.TaskEntry.COLUMN_DONE},
+                            TaskContract.TaskEntry.COLUMN_DONE + " = ?", new String[] { "1" } , null, null, null);
+                    CompleteFragment.compTaskAdapter.swapCursor(cursor);
                 }   else {
 
                 }

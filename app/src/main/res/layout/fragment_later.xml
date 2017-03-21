@@ -16,9 +16,9 @@
         android:text="tab1"/> -->
 
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/listview_tasks" />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/listview_tasks" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
