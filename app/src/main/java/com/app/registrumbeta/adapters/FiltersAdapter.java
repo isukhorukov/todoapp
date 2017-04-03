@@ -49,7 +49,7 @@ public class FiltersAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         // Find Views to populate in inflated template
         TextView textView = (TextView) view.findViewById(R.id.list_item_filters_textview);
-        CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox_done);
+        CheckBox checkBox1 = (CheckBox) view.findViewById(R.id.checkbox_done);
 
 
 
@@ -59,9 +59,9 @@ public class FiltersAdapter extends CursorAdapter {
 
         // Populate views with extracted properties
         textView.setText(task);
-    //    checkBox.setChecked(cursor.getInt(CriteriaFragment.COL_TASK_IMPORTANT) == 0 ? false : true);
+        checkBox1.setChecked(cursor.getInt(FiltersFragment.COL_TASK_DONE) == 0 ? false : true);
 
-        checkBox.setOnClickListener(new View.OnClickListener() {
+        checkBox1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean checked = ((CheckBox) v).isChecked();

@@ -56,8 +56,11 @@ public class CriteriaAdapter extends CursorAdapter {
 
         // Populate views with extracted properties
         textView.setText(task);
+
+        //trick for making chekbox automaticly checked
         checkBox.setChecked(cursor.getInt(CriteriaFragment.COL_TASK_IMPORTANT) == 0 ? false : true);
 
+        //check for make done
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

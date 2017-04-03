@@ -13,8 +13,10 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.app.registrumbeta.adapters.CompleteAdapter;
 import com.app.registrumbeta.adapters.FiltersAdapter;
 
+import com.app.registrumbeta.adapters.TaskAdapter;
 import com.app.registrumbeta.data.TaskContract;
 import com.app.registrumbeta.data.TaskDBHelper;
 
@@ -35,8 +37,8 @@ public class FiltersFragment extends Fragment {
     static public final int COL_TASK_DONE = 5;
 
     public static FiltersAdapter fTaskAdapter;
-
-
+   // static public TaskAdapter comppTaskAdapter;
+    ListView listView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,8 +46,8 @@ public class FiltersFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_filters, container, false);
 
         //Find the listView
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_filters);
-
+       // ListView listView = (ListView) rootView.findViewById(R.id.listview_filters);
+        listView = (ListView) rootView.findViewById(R.id.listview_filters);
         //checkbox for activate filter
         CheckBox checkBoxFilterImportant = (CheckBox) rootView.findViewById(R.id.checkbox_filter_important);
 
@@ -75,10 +77,11 @@ public class FiltersFragment extends Fragment {
 
         //Create a new TaskAdapter and bind it to ListView
         fTaskAdapter = new FiltersAdapter(getActivity(), cursor);
+
         // cTaskAdapter.swapCursor(cursor);
         listView.setAdapter(fTaskAdapter);
 
-
+        //sqlite query shows important tasks
         checkBoxFilterImportant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +103,8 @@ public class FiltersFragment extends Fragment {
                                     TaskContract.TaskEntry.COLUMN_DONE + " = ?", new String[] { "1", "0" } , null, null, null);
                     //Instance method with TaskAdapter so no need to use adapter.swapCursor()
                     fTaskAdapter.swapCursor(cursor); // update data for Ctritera
-
+                  //  comppTaskAdapter = new TaskAdapter(getActivity(), cursor);
+                   // listView.setAdapter(comppTaskAdapter);
                 } else {
                     SQLiteDatabase sqlDB = fTaskAdapter.helper.getWritableDatabase();
 
@@ -115,6 +119,7 @@ public class FiltersFragment extends Fragment {
                           //  null, null, null, null, null);
                     //Instance method with TaskAdapter so no need to use adapter.swapCursor()
                     fTaskAdapter.swapCursor(cursor); // update data for Ctritera
+                  //  listView.setAdapter(fTaskAdapter);
                 }
             }
         });

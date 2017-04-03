@@ -52,17 +52,19 @@ public class TaskAdapter extends CursorAdapter {
         delete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //Create a SQL command for deleting a particular ID.
                 String sql = String.format("DELETE FROM %s WHERE %s = '%s'",
                         TaskContract.TaskEntry.TABLE_NAME,
                         TaskContract.TaskEntry._ID,
                         id);
                 SQLiteDatabase sqlDB = helper.getWritableDatabase();
+
                 //Execute the delete command
                 sqlDB.execSQL(sql);
                 notifyDataSetChanged();
-               // CriteriaFragment.cTaskAdapter.notifyDataSetChanged();
 
+/*
                 //Query database for updated data
                 Cursor cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
                         new String[]{ TaskContract.TaskEntry._ID, 
@@ -72,6 +74,16 @@ public class TaskAdapter extends CursorAdapter {
 							  TaskContract.TaskEntry.COLUMN_CLEAR,
 							  TaskContract.TaskEntry.COLUMN_DONE},
                         null,null,null,null,null);
+*/
+                Cursor cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
+                        new String[]{ TaskContract.TaskEntry._ID,
+                                TaskContract.TaskEntry.COLUMN_TASK,
+                                TaskContract.TaskEntry.COLUMN_IMPORTANT,
+                                TaskContract.TaskEntry.COLUMN_QUICK,
+                                TaskContract.TaskEntry.COLUMN_CLEAR,
+                                TaskContract.TaskEntry.COLUMN_DONE},
+                        TaskContract.TaskEntry.COLUMN_DONE + " = ?", new String[] { "0" } , null, null, null);
+                //
                 //Instance method with TaskAdapter so no need to use adapter.swapCursor()
                 CriteriaFragment.cTaskAdapter.swapCursor(cursor); // update data for Ctritera
                 FiltersFragment.fTaskAdapter.swapCursor(cursor);
