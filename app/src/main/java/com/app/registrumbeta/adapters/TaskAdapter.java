@@ -86,6 +86,8 @@ public class TaskAdapter extends CursorAdapter {
                 //
                 //Instance method with TaskAdapter so no need to use adapter.swapCursor()
                 CriteriaFragment.cTaskAdapter.swapCursor(cursor); // update data for Ctritera
+                CriteriaFragment.quickAdapter.swapCursor(cursor);
+                CriteriaFragment.clearAdapter.swapCursor(cursor);
                 FiltersFragment.fTaskAdapter.swapCursor(cursor);
                 swapCursor(cursor);
             }

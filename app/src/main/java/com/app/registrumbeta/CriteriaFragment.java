@@ -10,11 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.registrumbeta.adapters.ClearAdapter;
 import com.app.registrumbeta.adapters.CompleteAdapter;
 import com.app.registrumbeta.adapters.CriteriaAdapter;
 
+import com.app.registrumbeta.adapters.QuickAdapter;
 import com.app.registrumbeta.data.TaskContract;
 import com.app.registrumbeta.data.TaskDBHelper;
 
@@ -22,7 +26,7 @@ import com.app.registrumbeta.data.TaskDBHelper;
  * Created by Илья on 05.03.2017.
  */
 
-public class CriteriaFragment extends Fragment {
+public class CriteriaFragment extends Fragment implements SeekBar.OnSeekBarChangeListener{
 
     public CriteriaFragment () {
 
@@ -33,17 +37,33 @@ public class CriteriaFragment extends Fragment {
     static public final int COL_TASK_ID = 0;
     static public final int COL_TASK_NAME = 1;
     static public final int COL_TASK_IMPORTANT = 2;
+    static public final int COL_TASK_QUICK = 3;
+    static public final int COL_TASK_CLEAR = 4;
+
+    ListView listView;
+    TextView sTextView;
+    SeekBar seekBar;
+    Cursor cursor;
+    View rootView;
 
     public static CriteriaAdapter cTaskAdapter;
+    public static QuickAdapter quickAdapter;
+    public static ClearAdapter clearAdapter;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_criteria, container, false);
+        rootView = inflater.inflate(R.layout.fragment_criteria, container, false);
 
         //Find the listView
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_make_important);
+        listView = (ListView) rootView.findViewById(R.id.listview_make_important);
+
+        seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
+        seekBar.setOnSeekBarChangeListener(this);
+        seekBar.setProgress(0);
+        //sTextView = (TextView) rootView.findViewById(R.id.seekTextView);
+        //sTextView.setText("0");
 
         //Get DBHelper to read from database
         TaskDBHelper helper = new TaskDBHelper(getActivity());
@@ -59,7 +79,7 @@ public class CriteriaFragment extends Fragment {
                         TaskContract.TaskEntry.COLUMN_DONE},
                 null, null, null, null, null); */
 
-        Cursor cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
+        cursor = sqlDB.query(TaskContract.TaskEntry.TABLE_NAME,
                 new String[]{ TaskContract.TaskEntry._ID,
                         TaskContract.TaskEntry.COLUMN_TASK,
                         TaskContract.TaskEntry.COLUMN_IMPORTANT,
@@ -70,11 +90,74 @@ public class CriteriaFragment extends Fragment {
 
         //Create a new TaskAdapter and bind it to ListView
         cTaskAdapter = new CriteriaAdapter(getActivity(), cursor);
-        //comppTaskAdapter = new CompleteAdapter(getActivity(), cursor);
+        //cTaskAdapter = new CriteriaAdapter(getActivity(), cursor);
+        quickAdapter = new QuickAdapter(getActivity(), cursor);
+        clearAdapter = new ClearAdapter(getActivity(), cursor);
        // cTaskAdapter.swapCursor(cursor);
-        listView.setAdapter(cTaskAdapter);
+        //listView.setAdapter(cTaskAdapter);
+/*
+        switch (seekBar.getProgress()) {
+            case 0:
+                //cTaskAdapter = new CriteriaAdapter(getActivity(), cursor);
+                listView.setAdapter(cTaskAdapter);
+                break;
+               // return rootView;
+            case 1:
+                //quickAdapter = new QuickAdapter(getActivity(), cursor);
+                listView.setAdapter(quickAdapter);
+                break;
+              //  return rootView;
+            case 2:
+                //clearAdapter = new ClearAdapter(getActivity(), cursor);
+                listView.setAdapter(clearAdapter);
+                break;
+               // return rootView;
+            default:
+                //cTaskAdapter = new CriteriaAdapter(getActivity(), cursor);
+                listView.setAdapter(cTaskAdapter);
+                break;
+               // return rootView;
+        }
+*/
+
 
         return rootView;
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        switch (progress) {
+            case 0:
+                //cTaskAdapter = new CriteriaAdapter(getActivity(), cursor);
+                listView.setAdapter(cTaskAdapter);
+                break;
+               // return rootView;
+            case 1:
+                //quickAdapter = new QuickAdapter(getActivity(), cursor);
+                listView.setAdapter(quickAdapter);
+                break;
+               // return rootView;
+            case 2:
+                //clearAdapter = new ClearAdapter(getActivity(), cursor);
+                listView.setAdapter(clearAdapter);
+                break;
+               // return rootView;
+            default:
+                //cTaskAdapter = new CriteriaAdapter(getActivity(), cursor);
+                listView.setAdapter(cTaskAdapter);
+                break;
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+       // sTextView.setText(String.valueOf(seekBar.getProgress()));
+
     }
 
 }

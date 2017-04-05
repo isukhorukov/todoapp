@@ -20,6 +20,8 @@ import java.lang.String;
 import android.widget.ListView;
 
 import static com.app.registrumbeta.CriteriaFragment.cTaskAdapter;
+import static com.app.registrumbeta.CriteriaFragment.clearAdapter;
+import static com.app.registrumbeta.CriteriaFragment.quickAdapter;
 import static com.app.registrumbeta.FiltersFragment.fTaskAdapter;
 
 
@@ -138,6 +140,8 @@ public class LaterFragment extends Fragment implements AddDialogFragment.OnAddTa
         //Swap old data with new data for display
         mTaskAdapter.swapCursor(cursor);
         cTaskAdapter.swapCursor(cursor);
+        clearAdapter.swapCursor(cursor);
+        quickAdapter.swapCursor(cursor);
         //fTaskAdapter.swapCursor(cursor);
     }
 }
