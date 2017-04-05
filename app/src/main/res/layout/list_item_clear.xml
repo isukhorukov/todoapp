@@ -4,17 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <TextView android:id="@+id/list_item_task_done"
+    <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="7"
+        android:id="@+id/list_item_criteria_textview"
         android:textAppearance="?android:textAppearanceLarge"/>
 
-    <Button
-        android:layout_width="0dp"
+    <CheckBox android:id="@+id/checkbox_clear"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:text="@string/button_delete"
-        android:id="@+id/list_item_taskdone_delete_button"/>
+        android:text="@string/clear"/>
+    <!--    android:onClick="onCheckboxClicked"/> -->
 
 </LinearLayout>

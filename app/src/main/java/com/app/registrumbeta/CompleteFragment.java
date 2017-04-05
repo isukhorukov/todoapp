@@ -25,7 +25,11 @@ public class CompleteFragment extends Fragment {
 
     }
 
+   // static public TaskAdapter compTaskAdapter;
     static public CompleteAdapter compTaskAdapter;
+    //static public TaskAdapter mTaskAdapter;
+
+    ListView listView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,7 +37,7 @@ public class CompleteFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_complete, container, false);
 
         //Find the listView
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_done);
+        listView = (ListView) rootView.findViewById(R.id.listview_done);
 
         //Get DBHelper to read from database
         TaskDBHelper helper = new TaskDBHelper(getActivity());

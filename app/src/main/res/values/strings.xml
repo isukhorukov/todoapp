@@ -7,4 +7,6 @@
     <string name="inputTask" />
     <string name="important">important</string>
     <string name="done">done</string>
+    <string name="quick">quick</string>
+    <string name="clear">clear</string>
 </resources>
